@@ -1,0 +1,6 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<form action="#" th:action="@{/genre/new}" th:object="${genreDto}" method="post">
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+</form>

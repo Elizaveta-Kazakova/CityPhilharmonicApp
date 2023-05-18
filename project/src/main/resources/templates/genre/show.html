@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Show</title>
+</head>
+<body>
+
+<p th:text="'name=' + ${genreDto.getName()}">VALUE</p>
+
+<br>
+
+<form th:method="POST" th:action="@{/genre/{id}(id=${genreDto.getId()})}">
+  <button type="submit" name="action" value="back">Back</button>
+  <button type="submit" name="action" value="update">Update</button>
+</form>
+
+</body>
+</html>

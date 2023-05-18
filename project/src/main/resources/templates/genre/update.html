@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New person</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/genre/update/{id}(id=${genreDto.getId()})}" th:object="${genreDto}">
+  <label for="name">Enter name: </label>
+  <input type="text" th:field="*{name}" id="name" placeholder="${genreDto.getName()}"/>
+  <br/>
+  <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

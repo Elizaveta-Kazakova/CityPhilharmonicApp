@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Index</title>
+</head>
+<body>
+
+<div th:each="genreDto : ${genreDto}">
+  <a th:href="@{/genre/{id}(id=${genreDto.getId()})}" th:text="${genreDto.getName()}">user</a>
+</div>
+<br>
+<form th:method="POST" th:action="@{/genre/new}">
+  <input type="submit" value="Create new genre"/>
+</form>
+
+</body>
+</html>
