@@ -6,11 +6,13 @@
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/genre}" th:object="${genreDto}">
+<form th:method="POST" th:action="@{/genre/search}" th:object="${genreDto}">
   <label for="name">Enter name: </label>
   <input type="text" th:field="*{name}" id="name"/>
+  <br>
+  <label>Such genre doesn`t exist</label>
   <br/>
-  <button type="submit" name="action" value="create">Create!</button>
+  <button type="submit">Find!</button>
 </form>
 
 </body>

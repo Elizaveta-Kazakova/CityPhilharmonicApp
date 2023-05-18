@@ -13,4 +13,7 @@ public interface ImpresarioService {
     List<ImpresarioDto> findImpresariosByArtist(String artist);
 
     List<ImpresarioDto> findImpresarioByGenre(String genre);
+
+    List<ImpresarioDto> list();
+
 }

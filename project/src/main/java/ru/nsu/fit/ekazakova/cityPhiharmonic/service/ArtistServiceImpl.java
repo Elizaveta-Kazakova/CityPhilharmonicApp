@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDto;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.ArtistNotFoundException;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.artist.ArtistRepository;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.GenreRepository;
@@ -13,6 +14,7 @@ import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Genre;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Impresario;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArtistServiceImpl implements ArtistService {
@@ -21,7 +23,7 @@ public class ArtistServiceImpl implements ArtistService {
     private final ImpresarioRepository impresarioRepository;
 
     private ArtistDto toDto(Artist artist) {
-        return new ArtistDto(artist.getName(),
+        return new ArtistDto(artist.getId(), artist.getName(),
                 artist.getImpresarios().stream().map(Impresario::getName).toList(),
                 artist.getGenres().stream().map(Genre::getName).toList());
     }
@@ -52,29 +54,46 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     @Transactional
-    public void updateArtist(ArtistDto artistDto, Long id) {
+    public void updateArtist(ArtistDto artistDto, Long id) throws ArtistNotFoundException {
         Artist previousArtist = artistRepository.findById(id).orElseThrow(
                 () -> new ArtistNotFoundException("artist with id = " + id + " not found"));
 
-//        artistRepository.deleteAllById(artistDto.getId());
+        artistRepository.deleteAllById(artistDto.getId());
 
-        previousArtist.setName(artistDto.getName());
-        previousArtist.setGenres(artistDto.getGenres()
+        Artist artist = new Artist();
+        artist.setId(previousArtist.getId());
+        artist.setName(artistDto.getName());
+        artist.setGenres(artistDto.getGenres()
                 .stream()
                 .map(genreRepository::findGenreByName)
                 .toList());
-        previousArtist.setImpresarios(artistDto.getImpresarios()
+        artist.setImpresarios(artistDto.getImpresarios()
                 .stream()
                 .map(impresarioRepository::findImpresarioByName)
                 .toList());
-        artistRepository.save(previousArtist);
+
+        artistRepository.save(artist);
     }
 
     @Override
     @Transactional
-    public ArtistDto findArtistById(Long id) {
+    public ArtistDto findArtistById(Long id) throws ArtistNotFoundException {
         return artistRepository.findById(id).map(this::toDto).orElseThrow(() ->
                 new ArtistNotFoundException("artist with id = " + id + " not found"));
+    }
+
+    @Override
+    public ArtistDto findArtistByIName(String name) throws ArtistNotFoundException {
+        Artist artist = artistRepository.findArtistByName(name);
+        if (artist == null) {
+            throw new ArtistNotFoundException("artist with name = " + name + " not found");
+        }
+        return toDto(artist);
+    }
+
+    @Override
+    public List<ArtistDto> list() {
+        return artistRepository.findAll().stream().map(this::toDto).toList();
     }
 
     @Override

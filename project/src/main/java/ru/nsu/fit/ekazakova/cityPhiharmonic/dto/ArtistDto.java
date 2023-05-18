@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArtistDto {
+    private Long id;
     private String name;
     private List<String> impresarios;
     private List<String> genres;

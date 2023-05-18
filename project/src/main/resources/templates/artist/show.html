@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Show</title>
+</head>
+<body>
+
+<p th:text="'name=' + ${artistDto.getName()}">VALUE</p>
+<div th:each="impresario : ${artistDto.getImpresarios()}">
+  <p th:text="'impresario=' + ${impresario}">VALUE</p>
+</div>
+<div th:each="genre : ${artistDto.getGenres()}">
+  <p th:text="'genre=' + ${genre}">VALUE</p>
+</div>
+
+<br>
+
+<form th:method="POST" th:action="@{/artist/{id}(id=${artistDto.getId()})}">
+  <button type="submit" name="action" value="back">Back</button>
+  <button type="submit" name="action" value="update">Update</button>
+</form>
+
+</body>
+</html>

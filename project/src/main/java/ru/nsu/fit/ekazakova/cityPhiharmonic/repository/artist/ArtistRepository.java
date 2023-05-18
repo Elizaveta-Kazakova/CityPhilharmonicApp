@@ -19,5 +19,7 @@ public interface ArtistRepository extends CrudRepository<Artist, Long>, ArtistCu
     @Query(value = "SELECT a FROM Artist a where a.name=:name")
     Artist findArtistByName(@Param("name") String name);
 
+    List<Artist> findAll();
+
     void deleteAllById(Long id);
 }

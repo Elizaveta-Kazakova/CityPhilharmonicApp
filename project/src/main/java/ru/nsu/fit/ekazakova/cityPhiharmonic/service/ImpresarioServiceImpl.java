@@ -53,5 +53,10 @@ public class ImpresarioServiceImpl implements ImpresarioService {
         return impresarioRepository.findImpresarioByGenre(genre).stream().map(this::toDto).toList();
     }
 
+    @Override
+    public List<ImpresarioDto> list() {
+        return impresarioRepository.findAll().stream().map(this::toDto).toList();
+    }
+
 
 }

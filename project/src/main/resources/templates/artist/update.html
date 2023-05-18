@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New person</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/artist/update/{id}(id=${artistDto.getId()})}" th:object="${artistDto}">
+  <label for="name">Enter name: </label>
+  <input type="text" th:field="*{name}" id="name" placeholder="${artistDto.getName()}"/>
+  <br/>
+  <div class="container">
+
+    <p>Select impresarios(Multiple):
+      <select id="multiple-impresarios" th:field="*{impresarios}"
+      multiple="multiple">
+
+        <option th:each="impresario: ${artistDto.getImpresarios()}"
+                th:value="${impresario}" th:text="${impresario}">
+      </select>
+    </p>
+
+    <p>Select genres(Multiple):
+      <select id="multiple-genres" th:field="*{genres}"
+              multiple="multiple">
+
+        <option th:each="genre: ${artistDto.getGenres()}"
+                th:value="${genre}" th:text="${genre}">
+      </select>
+    </p>
+
+  </div>
+
+  <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

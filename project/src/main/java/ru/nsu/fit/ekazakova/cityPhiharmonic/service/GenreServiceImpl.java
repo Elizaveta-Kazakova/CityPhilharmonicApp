@@ -42,22 +42,31 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
-    public GenreDto findGenreById(Long id) {
+    public GenreDto findGenreById(Long id) throws GenreNotFoundException {
         return genreRepository.findById(id).map(this::toDto).orElseThrow(() -> new GenreNotFoundException("genre with id = " +
                 id + " not found"));
     }
 
     @Override
     @Transactional
-    public void updateGenre(Long id, GenreDto genreDto) {
+    public void updateGenre(Long id, GenreDto genreDto) throws GenreNotFoundException {
         Genre previousGenre = genreRepository.findById(id).orElseThrow(
                 () -> new GenreNotFoundException("genre with id = " + id + " not found"));
 
-
-//        previousGenre.getArtists().forEach(artist -> artistRepository.deleteAllById(artist.getId()));
         genreRepository.deleteAllById(previousGenre.getId());
 
         Genre genre = new Genre(previousGenre.getId(), genreDto.getName(), previousGenre.getArtists());
         genreRepository.save(genre);
     }
+
+    @Override
+    public GenreDto findGenreByName(String name) throws GenreNotFoundException {
+        Genre genre = genreRepository.findGenreByName(name);
+        if (genre == null) {
+            throw new GenreNotFoundException("genre with name = " + name + " not found");
+        }
+        return toDto(genre);
+    }
+
+
 }

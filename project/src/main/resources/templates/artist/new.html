@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New person</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/artist}" th:object="${artistDto}">
+  <label for="name">Enter name: </label>
+  <input type="text" th:field="*{name}" id="name"/>
+  <br/>
+
+  <p>Select impresarios(Multiple):
+    <select id="multiple-impresarios" th:field="*{impresarios}"
+            multiple="multiple">
+
+      <option th:each="impresario: ${impresariosDto}"
+              th:value="${impresario}" th:text="${impresario}">
+    </select>
+  </p>
+
+  <p>Select impresarios(Multiple):
+    <select id="multiple-genres" th:field="*{genres}"
+            multiple="multiple">
+
+      <option th:each="genre: ${genresDto}"
+              th:value="${genre}" th:text="${genre}">
+    </select>
+  </p>
+
+  <button type="submit" name="action" value="create">Create!</button>
+</form>
+
+</body>
+</html>

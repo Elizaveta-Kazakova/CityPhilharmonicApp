@@ -30,11 +30,12 @@ begin
     into x
     from event_artist
     left join event on event.id = event_artist.event_id left join event e on e.id = new.event_id
-    where event_artist.artist_id = new.artist_id and e.id = new.event_id;
+    where event_artist.artist_id = new.artist_id and e.id = new.event_id and event.date = e.date;
     if (x > 0) then
-        RAISE EXCEPTION 'The event at this time and place already exists.'
-            USING HINT = 'Please choose a different time or cultural building';
+        RAISE EXCEPTION 'This artist is already busy on this date.'
+            USING HINT = 'Please choose a different time or artist';
     end if;
+    RETURN new;
 end;
 $$ LANGUAGE plpgsql;
 
@@ -103,7 +104,7 @@ begin
                        left join event_artist ea on ea.event_id = e.id
     where ea.artist_id = new.artist_id and c.id = new.competition_id;
     if (x = 0) then
-        RAISE EXCEPTION 'ddgvds.';
+        RAISE EXCEPTION 'The competition takes place at an event where this artist is not present';
     end if;
     RETURN new;
 end;

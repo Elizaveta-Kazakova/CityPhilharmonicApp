@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New person</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/home}" th:object="${genreDto}">
+    <button type="submit" name="entity" value="genre">Genre</button>
+    <button type="submit" name="entity" value="artist">Artist</button>
+    <button type="submit" name="entity" value="event">Event</button>
+    <button type="submit" name="entity" value="impresario">Impresario</button>
+    <button type="submit" name="entity" value="organizer">Organizer</button>
+    <button type="submit" name="entity" value="culturalBuilding">Cultural building</button>
+
+</form>
+
+</body>
+</html>
