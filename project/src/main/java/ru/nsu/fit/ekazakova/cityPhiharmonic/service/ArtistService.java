@@ -1,7 +1,9 @@
 package ru.nsu.fit.ekazakova.cityPhiharmonic.service;
 
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.ArtistNotFoundException;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Artist;
 
 import java.util.List;
 
@@ -17,11 +19,13 @@ public interface ArtistService {
 
     List<ArtistDto> list();
 
-    List<ArtistDto> findArtistsByGenre(String genre);
+    List<ArtistDetailsDto> findArtistsByGenre(String genre);
 
-    List<ArtistDto> findArtistsByImpresario(String impresario);
+    List<ArtistDetailsDto> findArtistsByImpresario(String impresario);
 
     List<ArtistDto> findArtistsWithMultiplyGenres();
 
     List<ArtistDto> findArtistsNotParticipatedInCompetitions();
+
+    List<ArtistDetailsDto> findArtistsByCompetition(String competition);
 }

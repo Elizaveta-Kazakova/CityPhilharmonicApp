@@ -24,4 +24,16 @@ public class WelcomeController {
     public String getArtistPage() {
         return "redirect:/artist";
     }
+
+    @PostMapping(params = "entity=event")
+    public String getEventPage() {
+        return "redirect:/event";
+    }
+
+    @PostMapping(params = "entity=queries")
+    public String getSpecialQueries() {
+        return "queries/index";
+    }
+
+
 }

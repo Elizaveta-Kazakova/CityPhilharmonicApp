@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Index</title>
+</head>
+<body>
+
+<div th:each="eventDto : ${eventDto}">
+  <a th:href="@{/event/{id}(id=${eventDto.getId()})}" th:text="${eventDto.getName()}">user</a>
+</div>
+<br>
+<form th:method="POST" th:action="@{/event/new}">
+  <input type="submit" value="Create new event"/>
+</form>
+<form th:method="POST" th:action="@{/event}">
+  <button type="submit" name="action" value="search">Search events</button>
+
+</form>
+
+</body>
+</html>

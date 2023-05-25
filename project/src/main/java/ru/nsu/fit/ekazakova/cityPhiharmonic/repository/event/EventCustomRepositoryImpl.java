@@ -52,16 +52,16 @@ public class EventCustomRepositoryImpl implements EventCustomRepository {
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
-    @Override
-    public List<Event> findEventByCulturalBuilding(String culturalBuilding) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
-
-        Root<Event> eventRoot = criteriaQuery.from(Event.class);
-
-        criteriaQuery.select(eventRoot).where(criteriaBuilder.equal(
-                eventRoot.get("culturalBuilding"), culturalBuilding));
-
-        return entityManager.createQuery(criteriaQuery).getResultList();
-    }
+//    @Override
+//    public List<Event> findEventByCulturalBuilding(String culturalBuilding) {
+//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
+//
+//        Root<Event> eventRoot = criteriaQuery.from(Event.class);
+//
+//        criteriaQuery.select(eventRoot).where(criteriaBuilder.equal(
+//                eventRoot.get("culturalBuilding"), culturalBuilding));
+//
+//        return entityManager.createQuery(criteriaQuery).getResultList();
+//    }
 }

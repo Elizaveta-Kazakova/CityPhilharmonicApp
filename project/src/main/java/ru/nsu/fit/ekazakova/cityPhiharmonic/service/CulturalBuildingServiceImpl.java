@@ -59,6 +59,11 @@ public class CulturalBuildingServiceImpl implements CulturalBuildingService {
                 new CulturalBuildingNotFoundException("cultural building with id = " + id + " not found"));
     }
 
+    @Override
+    public List<CulturalBuildingDto> list() {
+        return culturalBuildingRepository.findAll().stream().map(this::toDto).toList();
+    }
+
 
     @Override
     @Transactional

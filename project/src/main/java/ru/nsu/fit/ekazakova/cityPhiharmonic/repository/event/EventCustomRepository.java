@@ -11,5 +11,4 @@ public interface EventCustomRepository {
 
     List<Event> findEventInPeriodByOrganizer(LocalDate startDate, LocalDate endDate, String organizer);
 
-    List<Event> findEventByCulturalBuilding(String culturalBuilding);
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArtistDto {
+public class ArtistDto implements ArtistDetailsDto {
     private Long id;
     private String name;
     private List<String> impresarios;

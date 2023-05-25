@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New person</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/impresario/by-artist}">
+    <p>Select artist:
+        <select name="artist">
+            <option th:each="artistName: ${artistsDto}"
+                    th:value="${artistName}" th:text="${artistName}">
+        </select>
+    </p>
+    <br/>
+    <button type="submit">Find!</button>
+    <br>
+    <br>
+    <br>
+    <div th:each="impresario : ${impresariosByArtist}">
+        <a th:href="@{/impresario/{id}(id=${impresario.getId()})}" th:text="${impresario.getName()}">user</a>
+    </div>
+</form>
+
+
+</body>
+</html>

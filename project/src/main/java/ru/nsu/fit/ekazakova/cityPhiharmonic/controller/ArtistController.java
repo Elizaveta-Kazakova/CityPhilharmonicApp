@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDto;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.CompetitionDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ImpresarioDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.ArtistNotFoundException;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.GenreNotFoundException;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Artist;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.service.ArtistService;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.service.CompetitionService;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.service.GenreService;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.service.ImpresarioService;
 
@@ -32,13 +35,16 @@ public class ArtistController {
     private final ArtistService artistService;
     private final ImpresarioService impresarioService;
     private final GenreService genreService;
+    private final CompetitionService competitionService;
 
     @Autowired
     public ArtistController(ArtistService artistService, ImpresarioService impresarioService,
-                            GenreService genreService) {
+                            GenreService genreService, CompetitionService competitionService) {
         this.artistService = artistService;
         this.impresarioService = impresarioService;
         this.genreService = genreService;
+        this.competitionService = competitionService;
+
     }
 
     @PostMapping(value = "/new")
@@ -59,6 +65,24 @@ public class ArtistController {
     @PostMapping(params = "action=search")
     public String redirectToSearchArtist() {
         return "redirect:/artist/search";
+    }
+
+    @PostMapping(value = "by-genre")
+    public String redirectToArtistsByGenre(@RequestParam String genre) {
+        return "redirect:/artist/multiply-artists/" + genre + "?entity=genre";
+    }
+
+    @PostMapping(value = "prize-winners")
+    public String redirectToArtistsByCompetition(@RequestParam String competition) {
+        return "redirect:/artist/prize-winners/" + competition + "?entity=competition";
+    }
+
+    @PostMapping(value = "by-impresario")
+    public String redirectToArtistsByImpresario(@RequestParam String impresario) {
+        System.out.println("genre: " + impresario);
+        List<ArtistDetailsDto> a = artistService.findArtistsByImpresario(impresario);
+        System.out.println(a.get(0).getName());
+        return "redirect:/artist/multiply-artists/" + impresario + "?entity=impresario";
     }
 
     @PostMapping(params = "action=create")
@@ -85,7 +109,7 @@ public class ArtistController {
     }
 
     @GetMapping("/update/{id}")
-    public String getUpdatArtistForm(@PathVariable("id") Long id, Model model) {
+    public String getUpdateArtistForm(@PathVariable("id") Long id, Model model) {
         try {
             model.addAttribute("artistDto", artistService.findArtistById(id));
         } catch (ArtistNotFoundException ignored) {}
@@ -114,29 +138,64 @@ public class ArtistController {
         return "artist/new";
     }
 
+    @GetMapping("/by-genre")
+    public String getArtistSearchByGenreForm(Model model) {
+        model.addAttribute("genresDto", genreService.list().stream().map(GenreDto::getName));
+        return "artist/by_genre";
+    }
+
+    @GetMapping("/by-impresario")
+    public String getArtistSearchByImpresarioForm(Model model) {
+        model.addAttribute("impresariosDto", impresarioService.list().stream().map(ImpresarioDto::getName));
+        return "artist/by_impresario";
+    }
+
     @GetMapping()
     public String getArtistList(Model model) {
         model.addAttribute("artistDto", artistService.list());
+        model.addAttribute("genreName", "");
         return "artist/index";
     }
 
     // 2. Получить список артистов, выступающих в некотором жанре.
-    @GetMapping(value = "by-genre")
-    public ResponseEntity<List<ArtistDto>> getArtistsByGenre(@RequestParam String genre) {
-        return ResponseEntity.ok(artistService.findArtistsByGenre(genre));
+    @GetMapping(value = "/multiply-artists/{genre}", params = "entity=genre")
+    public String getArtistsByGenre(@PathVariable String genre, Model model) {
+        model.addAttribute("genresDto", genreService.list().stream().map(GenreDto::getName));
+        model.addAttribute("artistsByGenre", artistService.findArtistsByGenre(genre));
+        return "artist/by_genre";
     }
 
     // 3. Получить список артистов, работающих с некоторым импресарио.
-    @GetMapping(value = "by-impresario")
-    public ResponseEntity<List<ArtistDto>> getArtistsByImpresario(@RequestParam String impresario) {
-        return ResponseEntity.ok(artistService.findArtistsByImpresario(impresario));
+    @GetMapping(value = "/multiply-artists/{impresario}", params = "entity=impresario")
+    public String getArtistsByImpresario(@PathVariable String impresario, Model model) {
+        model.addAttribute("impresariosDto", impresarioService.list().stream().map(ImpresarioDto::getName));
+        model.addAttribute("artistsByImpresario", artistService.findArtistsByImpresario(impresario));
+        return "artist/by_impresario";
     }
+
 
     // 4. Получить список артистов, выступающих более чем в одним жанре с их
     //указанием.
-    @GetMapping(value = "multiply-genres")
-    public ResponseEntity<List<ArtistDto>> getArtistsWithMultiplyGenres() {
-        return ResponseEntity.ok(artistService.findArtistsWithMultiplyGenres());
+    @GetMapping("/multiply-genres")
+    public String getArtistWithMultipleGenres(Model model) {
+        model.addAttribute("artistsMultiplyGenresDto", artistService.findArtistsWithMultiplyGenres());
+        return "artist/multiply_genres";
+    }
+
+//    7. Получить список призеров указанного конкурса.
+    @GetMapping("/prize-winners")
+    public String getArtistsByCompetitionForm(Model model) {
+        model.addAttribute("competitionsDto",
+                competitionService.list().stream().map(CompetitionDto::getName).toList());
+        return "artist/prize_winners";
+    }
+
+    @GetMapping(value = "/prize-winners/{competition}", params = "entity=competition")
+    public String getArtistsByCompetition(@PathVariable String competition, Model model) {
+        model.addAttribute("competitionsDto",
+                competitionService.list().stream().map(CompetitionDto::getName).toList());
+        model.addAttribute("artistsByCompetition", artistService.findArtistsByCompetition(competition));
+        return "artist/prize_winners";
     }
 
     // 10. Получить список артистов, не участвовавших ни в каких конкурсах в

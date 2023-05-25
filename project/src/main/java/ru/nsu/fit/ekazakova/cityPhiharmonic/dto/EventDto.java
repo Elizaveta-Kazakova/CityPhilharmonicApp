@@ -12,10 +12,12 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventDto {
+public class EventDto implements EventDetailsDto {
+    private Long id;
     private String name;
     private LocalDate date;
     private String organizer;
     private String culturalBuilding;
     private List<String> artists;
+    private List<String> competitions;
 }

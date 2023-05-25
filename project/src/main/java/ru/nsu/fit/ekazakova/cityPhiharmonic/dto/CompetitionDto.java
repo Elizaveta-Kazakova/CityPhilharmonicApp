@@ -1,7 +1,6 @@
 package ru.nsu.fit.ekazakova.cityPhiharmonic.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImpresarioDto implements ImpresarioDetailsDto {
+public class CompetitionDto {
     private Long id;
     private String name;
 }

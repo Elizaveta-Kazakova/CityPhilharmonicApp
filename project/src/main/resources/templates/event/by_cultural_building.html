@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New person</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/event/by-cultural-building}">
+  <p>Select impresario:
+    <select name="culturalBuilding">
+      <option th:each="culturalBuildingName: ${culturalBuildingsDto}"
+              th:value="${culturalBuildingName}" th:text="${culturalBuildingName}">
+    </select>
+  </p>
+  <br>
+  <button type="submit">Find!</button>
+  <br>
+  <br>
+  <br>
+  <div th:each="eventDto : ${eventsDto}">
+    <a th:href="@{/event/{id}(id=${eventDto.getId()})}" th:text="${eventDto.getName()}">user</a>
+  </div>
+</form>
+
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New person</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/organizer/in-period}" >
+  <div>
+    <label>End of event:</label>
+    <input type="text" name="startDate" th:value="*{startDate}"/>
+  </div>
+<div>
+  <label>End of event:</label>
+  <input type="text" name="endDate" th:value="*{endDate}"/>
+</div>
+<!--  <div>-->
+<!--    <label for="event-start-date">Start of event:</label>-->
+<!--    <input type="date" name="startDate" th:value="*{startDate}"-->
+<!--           id="event-start-date"/>-->
+<!--  </div>-->
+<!--  <div>-->
+<!--    <label for="event-end-date">End of event:</label>-->
+<!--    <input type="date" name="endDate" th:value="*{endDate}"-->
+<!--           id="event-end-date"/>-->
+<!--  </div>-->
+  <br/>
+  <button type="submit">Find!</button>
+  <br>
+  <br>
+  <br>
+  <div th:each="organizer : ${organizersByArtist}">
+    <a th:href="@{/organizer/{id}(id=${organizer.getId()})}" th:text="${organizer.getName()}">user</a>
+  </div>
+</form>
+
+
+</body>
+</html>

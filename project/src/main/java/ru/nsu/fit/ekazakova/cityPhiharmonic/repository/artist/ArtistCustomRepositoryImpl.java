@@ -5,8 +5,13 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.internal.SessionImpl;
+import org.hibernate.persister.entity.OuterJoinLoadable;
 import org.springframework.stereotype.Repository;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Artist;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Genre;
 
 import java.util.List;
 
@@ -24,10 +29,11 @@ public class ArtistCustomRepositoryImpl implements ArtistCustomRepository {
         Root<Artist> artist = criteriaQuery.from(Artist.class);
 
         criteriaQuery
-                .select(
-                        artist.join("genre"))
+                .multiselect(
+                        artist.join("genres"))
                 .where(
-                        criteriaBuilder.equal(artist.join("genre").get("name"), genre));
+                        criteriaBuilder.equal(artist.join("genres").get("name"), genre));
+
 
         return entityManager.createQuery(criteriaQuery).getResultList();
     }

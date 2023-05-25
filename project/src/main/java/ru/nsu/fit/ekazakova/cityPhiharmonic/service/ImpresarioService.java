@@ -1,5 +1,6 @@
 package ru.nsu.fit.ekazakova.cityPhiharmonic.service;
 
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ImpresarioDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ImpresarioDto;
 
 import java.util.List;
@@ -10,9 +11,11 @@ public interface ImpresarioService {
 
     void updateImpresario(ImpresarioDto impresarioDto, Long id);
 
-    List<ImpresarioDto> findImpresariosByArtist(String artist);
+    List<ImpresarioDetailsDto> findImpresariosByArtist(String artist);
 
-    List<ImpresarioDto> findImpresarioByGenre(String genre);
+    List<ImpresarioDetailsDto> findImpresarioByGenre(String genre);
+
+    ImpresarioDto findById(Long id);
 
     List<ImpresarioDto> list();
 

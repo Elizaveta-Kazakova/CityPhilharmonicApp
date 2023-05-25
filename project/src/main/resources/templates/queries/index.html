@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+
+<div>
+    <a th:href="@{/artist/by-genre}">Получить перечень культурных сооружений залы,
+        вмещающие не менее указанного числа зрителей</a>
+    <br>
+    <a th:href="@{/artist/by-genre}">Получить список артистов, выступающих в некотором жанре</a>
+    <br>
+    <a th:href="@{/artist/by-impresario}">Получить список артистов, работающих с некоторым импресарио</a>
+    <br>
+    <a th:href="@{/artist/multiply-genres}">Получить список артистов, выступающих более чем в одним жанре с их
+        указанием</a>
+    <br>
+    <a th:href="@{/impresario/by-artist}">Получить список импресарио указанного артиста</a>
+    <br>
+    <a th:href="@{/artist/prize-winners}">Получить список призеров указанного конкурса</a>
+    <br>
+    <a th:href="@{/event/by-cultural-building}">Получить перечень концертных мероприятий, проведенных в указанном
+        культурном сооружении</a>
+    <br>
+    <a th:href="@{/impresario/by-genre}">Получить список импресарио определенного жанр</a>
+    <br>
+
+
+</div>
+<br>
+
+</body>
+</html>

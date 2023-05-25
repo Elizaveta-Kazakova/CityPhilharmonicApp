@@ -60,6 +60,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional
     public GenreDto findGenreByName(String name) throws GenreNotFoundException {
         Genre genre = genreRepository.findGenreByName(name);
         if (genre == null) {

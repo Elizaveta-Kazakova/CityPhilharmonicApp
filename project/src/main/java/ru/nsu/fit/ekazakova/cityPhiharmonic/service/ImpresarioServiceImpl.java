@@ -3,6 +3,7 @@ package ru.nsu.fit.ekazakova.cityPhiharmonic.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ImpresarioDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ImpresarioDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.ImpresarioNotFoundException;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Impresario;
@@ -15,7 +16,7 @@ public class ImpresarioServiceImpl implements ImpresarioService {
     private final ImpresarioRepository impresarioRepository;
 
     private ImpresarioDto toDto(Impresario impresario) {
-        return new ImpresarioDto(impresario.getName());
+        return new ImpresarioDto(impresario.getId(), impresario.getName());
     }
 
     @Autowired
@@ -43,14 +44,21 @@ public class ImpresarioServiceImpl implements ImpresarioService {
 
     @Transactional
     @Override
-    public List<ImpresarioDto> findImpresariosByArtist(String artist) {
-        return impresarioRepository.findImpresariosByArtist(artist).stream().map(this::toDto).toList();
+    public List<ImpresarioDetailsDto> findImpresariosByArtist(String artist) {
+        return impresarioRepository.findImpresariosByArtist(artist);
     }
 
     @Transactional
     @Override
-    public List<ImpresarioDto> findImpresarioByGenre(String genre) {
-        return impresarioRepository.findImpresarioByGenre(genre).stream().map(this::toDto).toList();
+    public List<ImpresarioDetailsDto> findImpresarioByGenre(String genre) {
+        return impresarioRepository.findImpresarioByGenre(genre);
+    }
+
+    @Transactional
+    @Override
+    public ImpresarioDto findById(Long id) {
+        return impresarioRepository.findById(id).map(this::toDto).orElseThrow(() ->
+                new ImpresarioNotFoundException("impresario with id = " + id + " not found"));
     }
 
     @Override

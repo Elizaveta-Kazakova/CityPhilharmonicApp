@@ -14,6 +14,8 @@ public interface CulturalBuildingService {
 
     CulturalBuildingDto findCulturalBuildingById(Long id);
 
+    List<CulturalBuildingDto> list();
+
     List<CulturalBuildingDto> findCulturalBuildingByType(String type);
 
     List<CulturalBuildingDto> findCulturalBuildingByNumOfSeats(Integer numOfSeats);

@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDto;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.EventDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.EventDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.EventNotFoundException;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.CompetitionRepository;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.artist.ArtistRepository;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.culturalBuilding.CulturalBuildingRepository;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.Competition;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Artist;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Genre;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Impresario;
@@ -24,19 +27,23 @@ public class EventServiceImpl implements EventService {
     private final OrganizerRepository organizerRepository;
     private final CulturalBuildingRepository culturalBuildingRepository;
     private final ArtistRepository artistRepository;
+    private final CompetitionRepository competitionRepository;
 
     private EventDto toDto(Event event) {
-        return new EventDto(event.getName(), event.getDate(), event.getOrganizer().getName(),
-                event.getCulturalBuilding().getName(), event.getArtists().stream().map(Artist::getName).toList());
+        return new EventDto(event.getId(), event.getName(), event.getDate(), event.getOrganizer().getName(),
+                event.getCulturalBuilding().getName(), event.getArtists().stream().map(Artist::getName).toList(),
+                event.getCompetitions().stream().map(Competition::getName).toList());
     }
 
     @Autowired
     public EventServiceImpl(EventRepository eventRepository, OrganizerRepository organizerRepository,
-                            CulturalBuildingRepository culturalBuildingRepository, ArtistRepository artistRepository) {
+                            CulturalBuildingRepository culturalBuildingRepository, ArtistRepository artistRepository,
+                            CompetitionRepository competitionRepository) {
         this.eventRepository = eventRepository;
         this.organizerRepository = organizerRepository;
         this.culturalBuildingRepository = culturalBuildingRepository;
         this.artistRepository = artistRepository;
+        this.competitionRepository = competitionRepository;
     }
 
     @Override
@@ -48,6 +55,7 @@ public class EventServiceImpl implements EventService {
         event.setOrganizer(organizerRepository.findOrganizerByName(eventDto.getOrganizer()));
         event.setCulturalBuilding(culturalBuildingRepository.findCulturalBuildingByName(eventDto.getCulturalBuilding()));
         event.setArtists(eventDto.getArtists().stream().map(artistRepository::findArtistByName).toList());
+        event.setCompetitions(eventDto.getCompetitions().stream().map(competitionRepository::findCompetitionByName).toList());
 
         eventRepository.save(event);
     }
@@ -74,6 +82,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
+    public List<EventDto> list() {
+        return eventRepository.findAll().stream().map(this::toDto).toList();
+    }
+
+    @Override
+    @Transactional
     public List<EventDto> findEventInPeriod(LocalDate startDate, LocalDate endDate) {
         return eventRepository.findEventInPeriod(startDate, endDate).stream().map(this::toDto).toList();
     }
@@ -87,8 +101,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public List<EventDto> findEventByCulturalBuilding(String culturalBuilding) {
-        return eventRepository.findEventByCulturalBuilding(culturalBuilding).stream().map(this::toDto).toList();
+    public List<EventDetailsDto> findEventByCulturalBuilding(String culturalBuilding) {
+        return eventRepository.findEventByCulturalBuilding(culturalBuilding);
     }
 
 

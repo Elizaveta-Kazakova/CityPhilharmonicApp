@@ -3,8 +3,10 @@ package ru.nsu.fit.ekazakova.cityPhiharmonic.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDto;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ImpresarioDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.ArtistNotFoundException;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.artist.ArtistRepository;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.GenreRepository;
@@ -13,6 +15,7 @@ import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Artist;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Genre;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Impresario;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,6 +86,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @Transactional
     public ArtistDto findArtistByIName(String name) throws ArtistNotFoundException {
         Artist artist = artistRepository.findArtistByName(name);
         if (artist == null) {
@@ -92,20 +96,21 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @Transactional
     public List<ArtistDto> list() {
         return artistRepository.findAll().stream().map(this::toDto).toList();
     }
 
     @Override
     @Transactional
-    public List<ArtistDto> findArtistsByGenre(String genre) {
-        return artistRepository.findArtistsByGenre(genre).stream().map(this::toDto).toList();
+    public List<ArtistDetailsDto> findArtistsByGenre(String genre) {
+        return artistRepository.findArtistsByGenre(genre);
     }
 
     @Override
     @Transactional
-    public List<ArtistDto> findArtistsByImpresario(String impresario) {
-        return artistRepository.findArtistsByImpresario(impresario).stream().map(this::toDto).toList();
+    public List<ArtistDetailsDto> findArtistsByImpresario(String impresario) {
+        return artistRepository.findArtistsByImpresario(impresario);
     }
 
     @Override
@@ -118,6 +123,11 @@ public class ArtistServiceImpl implements ArtistService {
     @Transactional
     public List<ArtistDto> findArtistsNotParticipatedInCompetitions() {
         return artistRepository.findArtistsNotParticipatedInCompetitions().stream().map(this::toDto).toList();
+    }
+
+    @Override
+    public List<ArtistDetailsDto> findArtistsByCompetition(String competition) {
+        return artistRepository.findArtistsByCompetition(competition);
     }
 
 

@@ -11,6 +11,7 @@ import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.organizer.OrganizerReposi
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.Organizer;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,9 +22,6 @@ public class OrganizerServiceImpl implements OrganizerService {
         return new OrganizerDto(organizer.getName());
     }
 
-    private OrganizerDetailsDto toDetailsDto(OrganizerDetails organizerDetails) {
-        return new OrganizerDetailsDto(toDto(organizerDetails.getOrganizer()), organizerDetails.getNumberOfEvents());
-    }
 
     @Autowired
     public OrganizerServiceImpl(OrganizerRepository organizerRepository) {
@@ -51,6 +49,12 @@ public class OrganizerServiceImpl implements OrganizerService {
     @Override
     @Transactional
     public List<OrganizerDetailsDto> findOrganizersInPeriod(LocalDate startDate, LocalDate endDate) {
-        return organizerRepository.findOrganizersInPeriod(startDate, endDate).stream().map(this::toDetailsDto).toList();
+        System.out.println("organizers =" + organizerRepository.findOrganizersInPeriod(startDate, endDate).stream().map(OrganizerDetailsDto::getName));
+        return organizerRepository.findOrganizersInPeriod(startDate, endDate);
+    }
+
+    @Override
+    public List<OrganizerDto> list() {
+        return organizerRepository.findAll().stream().map(this::toDto).toList();
     }
 }

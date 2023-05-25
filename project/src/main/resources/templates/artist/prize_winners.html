@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New person</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/artist/prize-winners}">
+  <p>Select genre:
+    <select name="competition">
+      <option th:each="competitionName: ${competitionsDto}"
+              th:value="${competitionName}" th:text="${competitionName}">
+    </select>
+  </p>
+  <br/>
+  <button type="submit">Find!</button>
+  <br>
+  <br>
+  <br>
+  <div th:each="artistByCompetition : ${artistsByCompetition}">
+    <a th:href="@{/artist/{id}(id=${artistByCompetition.getId()})}" th:text="${artistByCompetition.getName()}">user</a>
+  </div>
+</form>
+
+
+</body>
+</html>
