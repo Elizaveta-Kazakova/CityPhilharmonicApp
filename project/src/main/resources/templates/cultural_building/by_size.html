@@ -6,14 +6,10 @@
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/impresario/by-artist}">
-    <p>Select artist:
-        <select name="artist">
-            <option th:each="artistName: ${artistsDto}"
-                    th:value="${artistName}" th:text="${artistName}">
-        </select>
-    </p>
-    <br/>
+<form th:method="POST" th:action="@{/cultural_building/by-size}">
+    <label>Enter num of seats: </label>
+    <input type="text" th:name="numOfSeats" th:placeholder="numOfSeats" />
+    <br>
     <button type="submit">Find!</button>
     <br>
     <br>
@@ -21,10 +17,12 @@
     <table class="table table-bordered tabl-striped">
         <thead class="thead-dark">
         <th>name</th>
+        <th>num of seats</th>
         </thead>
         <tbody>
-        <tr th:each="artistByGenre : ${impresariosByArtist}">
-            <td><p th:text="${artistByGenre.name}">name</p></td>
+        <tr th:each="culturalBuilding : ${culturalBuildingsDto}">
+            <td><p th:text="${culturalBuilding.name}">name</p></td>
+            <td><p th:text="${culturalBuilding.numOfSeats}">num of seats</p></td>
         </tr>
         </tbody>
     </table>
@@ -32,6 +30,5 @@
 <form th:method="POST" th:action="@{/home/to-home}">
     <button type="submit">home</button>
 </form>
-
 </body>
 </html>

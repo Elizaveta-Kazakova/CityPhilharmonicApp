@@ -14,12 +14,12 @@ public interface ImpresarioRepository extends CrudRepository<Impresario, Long> {
     //    @Query(value = "SELECT impresario FROM Impresario impresario where impresario.name=:name")
     Impresario findImpresarioByName(@Param("name") String name);
 
-    @Query(nativeQuery = true, value = "SELECT i.id, i.name FROM public.impresario i " +
+    @Query(nativeQuery = true, value = "SELECT distinct i.id, i.name FROM public.impresario i " +
             "inner join public.artist_impresario ai on i.id = ai.impresario_id " +
             "inner join public.artist a on a.id = ai.artist_id where :artist = a.name")
     List<ImpresarioDetailsDto> findImpresariosByArtist(@Param("artist") String artist);
 
-    @Query(nativeQuery = true, value = "select i from public.impresario i " +
+    @Query(nativeQuery = true, value = "select distinct i.id, i.name from public.impresario i " +
             "inner join artist_impresario ai on i.id = ai.impresario_id " +
             "inner join public.artist a on a.id = ai.artist_id " +
             "inner join public.artist_genre ag on a.id = ag.artist_id " +

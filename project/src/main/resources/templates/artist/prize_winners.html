@@ -7,7 +7,7 @@
 <body>
 
 <form th:method="POST" th:action="@{/artist/prize-winners}">
-  <p>Select genre:
+  <p>Select competition:
     <select name="competition">
       <option th:each="competitionName: ${competitionsDto}"
               th:value="${competitionName}" th:text="${competitionName}">
@@ -18,11 +18,22 @@
   <br>
   <br>
   <br>
-  <div th:each="artistByCompetition : ${artistsByCompetition}">
-    <a th:href="@{/artist/{id}(id=${artistByCompetition.getId()})}" th:text="${artistByCompetition.getName()}">user</a>
-  </div>
+  <table class="table table-bordered tabl-striped">
+    <thead class="thead-dark">
+    <th>name</th>
+    <th>place</th>
+    </thead>
+    <tbody>
+    <tr th:each="artistByGenre : ${artistsByCompetition}">
+      <td><p th:text="${artistByGenre.name}">name</p></td>
+      <td><p th:text="${artistByGenre.place_in_rating}">place</p></td>
+    </tr>
+    </tbody>
+  </table>
 </form>
-
+<form th:method="POST" th:action="@{/home/to-home}">
+  <button type="submit">home</button>
+</form>
 
 </body>
 </html>

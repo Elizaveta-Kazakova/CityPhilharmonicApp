@@ -95,14 +95,13 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public List<EventDto> findEventInPeriodByOrganizer(LocalDate startDate, LocalDate endDate, String organizer) {
-        return eventRepository.findEventInPeriodByOrganizer(startDate, endDate, organizer)
-                .stream().map(this::toDto).toList();
+        return eventRepository.findEventInPeriodByOrganizer(startDate, endDate, organizer).stream().map(this::toDto).toList();
     }
 
     @Override
     @Transactional
-    public List<EventDetailsDto> findEventByCulturalBuilding(String culturalBuilding) {
-        return eventRepository.findEventByCulturalBuilding(culturalBuilding);
+    public List<EventDto> findEventByCulturalBuilding(String culturalBuilding) {
+        return eventRepository.findEventByCulturalBuilding(culturalBuilding).stream().map(this::toDto).toList();
     }
 
 

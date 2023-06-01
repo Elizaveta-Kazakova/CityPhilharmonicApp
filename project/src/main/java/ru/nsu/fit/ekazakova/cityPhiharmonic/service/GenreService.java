@@ -1,5 +1,6 @@
 package ru.nsu.fit.ekazakova.cityPhiharmonic.service;
 
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.GenreNotFoundException;
 
@@ -16,4 +17,6 @@ public interface GenreService {
     void updateGenre(Long id, GenreDto genreDto) throws GenreNotFoundException;
 
     GenreDto findGenreByName(String name) throws GenreNotFoundException;
+
+    List<GenreDetailsDto> findGenreByArtist(String artistName);
 }

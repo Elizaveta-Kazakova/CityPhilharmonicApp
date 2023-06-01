@@ -18,9 +18,13 @@
   <br>
   <br>
   <br>
-  <div th:each="artistByGenre : ${artistsByGenre}">
-    <a th:href="@{/artist/{id}(id=${artistByGenre.getId()})}" th:text="${artistByGenre.getName()}">user</a>
+  name
+  <div th:each="artistDto : ${artistsByGenre}">
+    <a th:href="@{/artist/{id}(id=${artistDto.getId()})}" th:text="${artistDto.getName()}">user</a>
   </div>
+</form>
+<form th:method="POST" th:action="@{/home/to-home}">
+  <button type="submit">home</button>
 </form>
 
 

@@ -7,7 +7,7 @@
 <body>
 
 <form th:method="POST" th:action="@{/event/by-cultural-building}">
-  <p>Select impresario:
+  <p>Select cultural building:
     <select name="culturalBuilding">
       <option th:each="culturalBuildingName: ${culturalBuildingsDto}"
               th:value="${culturalBuildingName}" th:text="${culturalBuildingName}">
@@ -18,11 +18,29 @@
   <br>
   <br>
   <br>
-  <div th:each="eventDto : ${eventsDto}">
-    <a th:href="@{/event/{id}(id=${eventDto.getId()})}" th:text="${eventDto.getName()}">user</a>
-  </div>
+  <table class="table table-bordered tabl-striped">
+    <thead class="thead-dark">
+    <th>name</th>
+    <th>date</th>
+    <th>organizer</th>
+    <th>culturalBuilding</th>
+
+    </thead>
+    <tbody>
+    <tr th:each="eventDto : ${eventsDto}">
+      <td><p th:text="${eventDto.name}">name</p></td>
+      <td><p th:text="${eventDto.date}">date</p></td>
+      <td><p th:text="${eventDto.organizer}">organizer</p></td>
+      <td><p th:text="${eventDto.culturalBuilding}">culturalBuilding</p></td>
+
+
+    </tr>
+    </tbody>
+  </table>
 </form>
 
-
+<form th:method="POST" th:action="@{/home/to-home}">
+  <button type="submit">home</button>
+</form>
 </body>
 </html>

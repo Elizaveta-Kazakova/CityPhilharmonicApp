@@ -1,8 +1,6 @@
 package ru.nsu.fit.ekazakova.cityPhiharmonic.dto;
 
-public interface OrganizerDetailsDto {
-
+public interface GenreDetailsDto {
     Long getId();
     String getName();
-    Integer getNumberOfEvents();
 }

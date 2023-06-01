@@ -15,7 +15,7 @@ public interface OrganizerRepository extends CrudRepository<Organizer, Long> {
     @Query(value = "SELECT org FROM Organizer org where org.name=:name")
     Organizer findOrganizerByName(@Param("name")String name);
 
-    @Query(nativeQuery = true, value = "SELECT o.name, count(e.id) " +
+    @Query(nativeQuery = true, value = "SELECT o.name, count(e.id) NumberOfEvents " +
             "FROM public.organizer o INNER JOIN event e on o.id = e.organizer_id " +
             "WHERE e.date BETWEEN :startDate AND :endDate " +
             "GROUP BY o.name")

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New person</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/cultural_building/in-period}" >
+    <div>
+        <label for="event-start-date">Start of event:</label>
+        <input type="date" name="startDate" th:value="*{startDate}"
+               id="event-start-date"/>
+    </div>
+    <div>
+        <label for="event-end-date">End of event:</label>
+        <input type="date" name="endDate" th:value="*{endDate}"
+               id="event-end-date"/>
+    </div>
+    <br/>
+    <button type="submit">Find!</button>
+    <br>
+    <br>
+    <table class="table table-bordered tabl-striped">
+        <thead class="thead-dark">
+        <th>name</th>
+        <th>num of seats</th>
+        <th>date</th>
+        </thead>
+        <tbody>
+        <tr th:each="cb : ${culturalBuildingsDto}">
+                    <td><p th:text="${cb.culturalBuildingDto.name}">name</p></td>
+                    <td><p th:text="${cb.culturalBuildingDto.numOfSeats}">num of seats</p></td>
+                    <td><p th:text="${cb.date}">date</p></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    </div>
+</form>
+<form th:method="POST" th:action="@{/home/to-home}">
+    <button type="submit">home</button>
+</form>
+
+</body>
+</html>

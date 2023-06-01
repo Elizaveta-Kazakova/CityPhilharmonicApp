@@ -18,11 +18,15 @@
   <br>
   <br>
   <br>
-  <div th:each="artistByImpresario : ${artistsByImpresario}">
-    <a th:href="@{/artist/{id}(id=${artistByImpresario.getId()})}" th:text="${artistByImpresario.getName()}">user</a>
+  name
+  <div th:each="artistDto : ${artistsByImpresario}">
+    <a th:href="@{/artist/{id}(id=${artistDto.getId()})}" th:text="${artistDto.getName()}">user</a>
   </div>
-</form>
 
+</form>
+<form th:method="POST" th:action="@{/home/to-home}">
+  <button type="submit">home</button>
+</form>
 
 </body>
 </html>

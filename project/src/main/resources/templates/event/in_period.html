@@ -5,7 +5,7 @@
   <title>New person</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/organizer/in-period}" >
+<form th:method="POST" th:action="@{/event/in-period}" >
   <div>
     <label for="event-start-date">Start of event:</label>
     <input type="date" name="startDate" th:value="*{startDate}"
@@ -17,6 +17,13 @@
            id="event-end-date"/>
   </div>
   <br/>
+  <p>Select organizer:
+    <select name="organizer">
+      <option th:each="organizerName: ${organizersDto}"
+              th:value="${organizerName}" th:text="${organizerName}">
+
+    </select>
+  </p>
   <button type="submit">Find!</button>
   <br>
   <br>
@@ -24,12 +31,18 @@
   <table class="table table-bordered tabl-striped">
     <thead class="thead-dark">
     <th>name</th>
-    <th>num of events</th>
+    <th>date</th>
+    <th>organizer</th>
+    <th>culturalBuilding</th>
+
     </thead>
     <tbody>
-    <tr th:each="artistByGenre : ${organizersInPeriod}">
-      <td><p th:text="${artistByGenre.name}">name</p></td>
-      <td><p th:text="${artistByGenre.NumberOfEvents}">NumberOfEvents</p></td>
+    <tr th:each="eventDto : ${eventsInPeriod}">
+      <td><p th:text="${eventDto.name}">name</p></td>
+      <td><p th:text="${eventDto.date}">date</p></td>
+      <td><p th:text="${eventDto.organizer}">organizer</p></td>
+      <td><p th:text="${eventDto.culturalBuilding}">culturalBuilding</p></td>
+
 
     </tr>
     </tbody>

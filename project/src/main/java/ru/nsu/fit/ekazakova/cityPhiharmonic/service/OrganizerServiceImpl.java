@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.OrganizerDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.OrganizerDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.OrganizerNotFoudException;
-import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.organizer.OrganizerDetails;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.organizer.OrganizerRepository;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.Organizer;
 
@@ -49,7 +48,6 @@ public class OrganizerServiceImpl implements OrganizerService {
     @Override
     @Transactional
     public List<OrganizerDetailsDto> findOrganizersInPeriod(LocalDate startDate, LocalDate endDate) {
-        System.out.println("organizers =" + organizerRepository.findOrganizersInPeriod(startDate, endDate).stream().map(OrganizerDetailsDto::getName));
         return organizerRepository.findOrganizersInPeriod(startDate, endDate);
     }
 

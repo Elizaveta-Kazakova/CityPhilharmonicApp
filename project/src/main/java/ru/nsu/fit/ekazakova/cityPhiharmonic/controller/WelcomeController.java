@@ -35,5 +35,9 @@ public class WelcomeController {
         return "queries/index";
     }
 
+    @PostMapping(value = "to-home")
+    public String toHome(){
+        return "queries/index";
+    }
 
 }

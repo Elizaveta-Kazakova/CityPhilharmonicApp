@@ -5,10 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.culturalBuilding.CulturalBuildingDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.culturalBuilding.CulturalBuildingDto;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.culturalBuilding.CulturalBuildingInPeriodDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.CulturalBuildingNotFoundException;
-import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.culturalBuilding.CulturalBuildingDetails;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.culturalBuilding.CulturalBuildingRepository;
-import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.cultural_building.CulturalBuilding;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.culturalBuilding.CulturalBuilding;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.culturalBuilding.CulturalBuildingInPeriod;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,9 +22,9 @@ public class CulturalBuildingServiceImpl implements CulturalBuildingService {
         return new CulturalBuildingDto(culturalBuilding.getName(), culturalBuilding.getNumOfSeats());
     }
 
-    private CulturalBuildingDetailsDto toDetailsDto(CulturalBuildingDetails culturalBuildingDetails) {
-        return new CulturalBuildingDetailsDto(toDto(culturalBuildingDetails.getCulturalBuilding()),
-                culturalBuildingDetails.getDatesOfPlannedEvents());
+    private CulturalBuildingInPeriodDto toDtoInPeriod(CulturalBuildingInPeriod culturalBuilding) {
+        return new CulturalBuildingInPeriodDto(new CulturalBuildingDto(culturalBuilding.getName(),
+                culturalBuilding.getNumOfSeats()), culturalBuilding.getDate());
     }
 
     @Autowired
@@ -31,7 +32,6 @@ public class CulturalBuildingServiceImpl implements CulturalBuildingService {
         this.culturalBuildingRepository = culturalBuildingRepository;
     }
 
-    //TODO: добавить библиотечный mapper для дто (MapStruct ? ModelMapper ? )
     @Override
     @Transactional
     public void createCulturalBuilding(CulturalBuildingDto culturalBuildingDto) {
@@ -64,24 +64,29 @@ public class CulturalBuildingServiceImpl implements CulturalBuildingService {
         return culturalBuildingRepository.findAll().stream().map(this::toDto).toList();
     }
 
-
-    @Override
-    @Transactional
-    public List<CulturalBuildingDto> findCulturalBuildingByType(String type) {
-        return culturalBuildingRepository.findCulturalBuildingByType(type).stream().map(this::toDto).toList();
-    }
+//
+//    @Override
+//    @Transactional
+//    public List<CulturalBuildingDto> findCulturalBuildingByType(String type) {
+//        return culturalBuildingRepository.findCulturalBuildingByType(type).stream().map(this::toDto).toList();
+//    }
 
     @Override
     @Transactional
     public List<CulturalBuildingDto> findCulturalBuildingByNumOfSeats(Integer numOfSeats) {
-        return culturalBuildingRepository.findCulturalBuildingByNumOfSeats(numOfSeats).stream().map(this::toDto).toList();
+        return culturalBuildingRepository.findCulturalBuildingByNumOfSeats(numOfSeats)
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 
     @Override
     @Transactional
-    public List<CulturalBuildingDetailsDto> findCulturalBuildingsInPeriod(LocalDate startDate, LocalDate endDate) {
+    public List<CulturalBuildingInPeriodDto> findCulturalBuildingsInPeriod(LocalDate startDate, LocalDate endDate) {
         return culturalBuildingRepository.findCulturalBuildingsInPeriod(startDate, endDate)
-                .stream().map(this::toDetailsDto).toList();
+                .stream()
+                .map(this::toDtoInPeriod)
+                .toList();
     }
 
 

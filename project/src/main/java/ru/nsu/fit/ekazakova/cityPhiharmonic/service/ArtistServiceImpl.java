@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDetailsDto;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDetailsInCompetitionDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDto;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ImpresarioDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.ArtistNotFoundException;
@@ -15,6 +17,7 @@ import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Artist;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Genre;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Impresario;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -115,18 +118,19 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     @Transactional
-    public List<ArtistDto> findArtistsWithMultiplyGenres() {
-        return artistRepository.findArtistsWithMultiplyGenres().stream().map(this::toDto).toList();
+    public List<ArtistDetailsDto> findArtistsWithMultiplyGenres() {
+        List<ArtistDetailsDto> artistDetailsDtos = artistRepository.findArtistsWithMultiplyGenres();
+        return artistRepository.findArtistsWithMultiplyGenres();
     }
 
     @Override
     @Transactional
-    public List<ArtistDto> findArtistsNotParticipatedInCompetitions() {
-        return artistRepository.findArtistsNotParticipatedInCompetitions().stream().map(this::toDto).toList();
+    public List<ArtistDetailsDto> findArtistsNotParticipatedInCompetitions(LocalDate startDate, LocalDate endDate) {
+        return artistRepository.findArtistsNotParticipatedInCompetitions(startDate, endDate);
     }
 
     @Override
-    public List<ArtistDetailsDto> findArtistsByCompetition(String competition) {
+    public List<ArtistDetailsInCompetitionDto> findArtistsByCompetition(String competition) {
         return artistRepository.findArtistsByCompetition(competition);
     }
 

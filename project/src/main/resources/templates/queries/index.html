@@ -5,27 +5,41 @@
     <title>Index</title>
 </head>
 <body>
-
 <div>
-    <a th:href="@{/artist/by-genre}">Получить перечень культурных сооружений залы,
-        вмещающие не менее указанного числа зрителей</a>
+    <p> <label>  Artist </label> </p>
+    <a th:href="@{/artist/by-genre}">by genre</a>
     <br>
-    <a th:href="@{/artist/by-genre}">Получить список артистов, выступающих в некотором жанре</a>
+    <a th:href="@{/artist/by-impresario}">by impresario</a>
     <br>
-    <a th:href="@{/artist/by-impresario}">Получить список артистов, работающих с некоторым импресарио</a>
+    <a th:href="@{/artist/multiply-genres}">multiply genres</a>
     <br>
-    <a th:href="@{/artist/multiply-genres}">Получить список артистов, выступающих более чем в одним жанре с их
-        указанием</a>
+    <a th:href="@{/artist/prize-winners}">prize winners</a>
     <br>
-    <a th:href="@{/impresario/by-artist}">Получить список импресарио указанного артиста</a>
+    <a th:href="@{/artist/not-participated}">not participated</a>
     <br>
-    <a th:href="@{/artist/prize-winners}">Получить список призеров указанного конкурса</a>
+    <p> <label>  Impresario </label> </p>
+    <a th:href="@{/impresario/by-artist}">by artist</a>
     <br>
-    <a th:href="@{/event/by-cultural-building}">Получить перечень концертных мероприятий, проведенных в указанном
-        культурном сооружении</a>
+    <a th:href="@{/impresario/by-genre}">by genre</a>
     <br>
-    <a th:href="@{/impresario/by-genre}">Получить список импресарио определенного жанр</a>
+
+    <p> <label>  Organizer </label> </p>
+    <a th:href="@{/organizer/in-period}">by date of cultural event</a>
     <br>
+
+    <p> <label> Cultural Event </label></p>
+    <a th:href="@{/event/by-cultural-building}">by cultural building</a>
+    <br>
+    <a th:href="@{/event/in-period}">in period</a>
+    <br>
+
+
+    <p> <label> Cultural Building </label></p>
+    <a th:href="@{/cultural_building/in-period}">in period</a>
+    <br>
+    <a th:href="@{/cultural_building/by-size}">by number of seats</a>
+    <br>
+
 
 
 </div>

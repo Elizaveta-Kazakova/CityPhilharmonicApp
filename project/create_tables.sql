@@ -30,7 +30,7 @@ create table competition
 (
     id       bigserial    not null,
     name     varchar(255) not null,
-    event_id bigint,
+    event_id bigint       not null,
     primary key (id)
 );
 create table competition_artist

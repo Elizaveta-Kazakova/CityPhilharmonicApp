@@ -2,6 +2,7 @@ package ru.nsu.fit.ekazakova.cityPhiharmonic.service;
 
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.EventDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.EventDto;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.Event;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,8 +19,8 @@ public interface EventService {
     List<EventDto> findEventInPeriod(LocalDate startDate, LocalDate endDate);
 
     List<EventDto> findEventInPeriodByOrganizer(LocalDate startDate, LocalDate endDate,
-                                                String organizer);
+                                             String organizer);
 
-    List<EventDetailsDto> findEventByCulturalBuilding(String culturalBuilding);
+    List<EventDto> findEventByCulturalBuilding(String culturalBuilding);
 
 }

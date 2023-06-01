@@ -27,6 +27,8 @@ import ru.nsu.fit.ekazakova.cityPhiharmonic.service.CompetitionService;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.service.GenreService;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.service.ImpresarioService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -79,9 +81,6 @@ public class ArtistController {
 
     @PostMapping(value = "by-impresario")
     public String redirectToArtistsByImpresario(@RequestParam String impresario) {
-        System.out.println("genre: " + impresario);
-        List<ArtistDetailsDto> a = artistService.findArtistsByImpresario(impresario);
-        System.out.println(a.get(0).getName());
         return "redirect:/artist/multiply-artists/" + impresario + "?entity=impresario";
     }
 
@@ -173,11 +172,21 @@ public class ArtistController {
         return "artist/by_impresario";
     }
 
+    @PostMapping("/multiply-genres")
+    public String redirectToArtistWithMultipleGenres(Model model) {
+        return "redirect:/artist/multiply-genres/show";
+    }
+
+    @GetMapping("/multiply-genres")
+    public String getArtistWithMultipleGenresForm(Model model) {
+        return "artist/multiply_genres";
+    }
 
     // 4. Получить список артистов, выступающих более чем в одним жанре с их
     //указанием.
-    @GetMapping("/multiply-genres")
+    @GetMapping("/multiply-genres/show")
     public String getArtistWithMultipleGenres(Model model) {
+        System.out.println("names" + artistService.findArtistsWithMultiplyGenres().stream().map(ArtistDetailsDto::getName));
         model.addAttribute("artistsMultiplyGenresDto", artistService.findArtistsWithMultiplyGenres());
         return "artist/multiply_genres";
     }
@@ -201,8 +210,30 @@ public class ArtistController {
     // 10. Получить список артистов, не участвовавших ни в каких конкурсах в
     //течение определенного периода времени.
     @GetMapping(value = "not-participated")
-    public ResponseEntity<List<ArtistDto>> getArtistsNotParticipatedInCompetitions() {
-        return ResponseEntity.ok(artistService.findArtistsNotParticipatedInCompetitions());
+    public String getArtistsNotParticipatedInCompetitionsForm( @ModelAttribute("startDate") String startDate,
+                                                              @ModelAttribute("endDate") String endDate) {
+//        model.addAttribute("notParticipatedArtists",
+//                artistService.findArtistsNotParticipatedInCompetitions());
+        return "artist/not_participated";
+    }
+    @PostMapping(value = "not-participated")
+    public String redirectToNotParticipatedInCompetitions(@ModelAttribute("startDate") String startDate,
+                                                              @ModelAttribute("endDate") String endDate) {
+        return "redirect:/artist/not-participated/show?startDate=" + startDate + "&endDate=" + endDate;
+    }
+
+    @GetMapping(value = "not-participated/show")
+    public String getNotParticipatedInCompetitions( Model model, @RequestParam String startDate, @RequestParam String endDate) {
+
+        DateTimeFormatter sqlFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        LocalDate startParsedDate = LocalDate.parse(startDate, sqlFormatter);
+        LocalDate endParsedDate = LocalDate.parse(endDate, sqlFormatter);
+
+        model.addAttribute("notParticipatedArtists",
+                artistService.findArtistsNotParticipatedInCompetitions(startParsedDate, endParsedDate));
+
+        return "artist/not_participated";
     }
 }
 

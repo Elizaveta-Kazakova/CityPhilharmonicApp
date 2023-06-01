@@ -3,6 +3,7 @@ package ru.nsu.fit.ekazakova.cityPhiharmonic.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.ArtistNotFoundException;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.exception.GenreNotFoundException;
@@ -67,6 +68,12 @@ public class GenreServiceImpl implements GenreService {
             throw new GenreNotFoundException("genre with name = " + name + " not found");
         }
         return toDto(genre);
+    }
+
+    @Override
+    @Transactional
+    public List<GenreDetailsDto> findGenreByArtist(String artistName) {
+        return genreRepository.findGenreByArtist(artistName);
     }
 
 

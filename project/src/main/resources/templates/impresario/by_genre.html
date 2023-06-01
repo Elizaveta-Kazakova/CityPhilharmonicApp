@@ -7,7 +7,7 @@
 <body>
 
 <form th:method="POST" th:action="@{/impresario/by-genre}">
-  <p>Select artist:
+  <p>Select genre:
     <select name="genre">
       <option th:each="genreName: ${genresDto}"
               th:value="${genreName}" th:text="${genreName}">
@@ -18,11 +18,20 @@
   <br>
   <br>
   <br>
-  <div th:each="impresario : ${impresariosByArtist}">
-    <a th:href="@{/impresario/{id}(id=${impresario.getId()})}" th:text="${impresario.getName()}">user</a>
-  </div>
+  <table class="table table-bordered tabl-striped">
+    <thead class="thead-dark">
+    <th>name</th>
+    </thead>
+    <tbody>
+    <tr th:each="artistByGenre : ${impresariosByGenre}">
+      <td><p th:text="${artistByGenre.name}">name</p></td>
+    </tr>
+    </tbody>
+  </table>
 </form>
-
+<form th:method="POST" th:action="@{/home/to-home}">
+  <button type="submit">home</button>
+</form>
 
 </body>
 </html>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ArtistDto;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.EventDetailsDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.EventDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.GenreDto;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.dto.ImpresarioDto;
@@ -28,7 +29,10 @@ import ru.nsu.fit.ekazakova.cityPhiharmonic.service.EventService;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.service.OrganizerService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Controller
@@ -98,24 +102,69 @@ public class EventController {
 
         // 6. Получить перечень концертных мероприятий, проведенных в течение
     //заданного периода времени в целом
-    @GetMapping(value = "in-period", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<EventDto>> getEventInPeriod(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                                      @RequestParam LocalDate startDate,
-                                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                                      @RequestParam LocalDate endDate) {
-        return ResponseEntity.ok(eventService.findEventInPeriod(startDate, endDate));
-    }
+//    @GetMapping(value = "in-period")
+//    public String getEventInPeriodForm(Model model, @ModelAttribute("startDate") String startDate,
+//                                                           @ModelAttribute("endDate") String endDate) {
+//        model.addAttribute("organizersDto", organizerService.list().stream().map(OrganizerDto::getName).toList());
+//        return "event/in_period";
+//    }
+//
+//    @PostMapping(value = "in-period")
+//    public String redirectToEventInPeriod(@ModelAttribute("startDate") String startDate,
+//                                       @ModelAttribute("endDate") String endDate) {
+//        return "redirect:/event/in-period/show?startDate=" + startDate + "&endDate=" + endDate;
+//    }
+//
+//    @GetMapping(value = "in-period/show")
+//    public String getEventInPeriod(Model model, @RequestParam String startDate, @RequestParam String endDate) {
+//        DateTimeFormatter sqlFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//
+//        LocalDate startParsedDate = LocalDate.parse(startDate, sqlFormatter);
+//        LocalDate endParsedDate = LocalDate.parse(endDate, sqlFormatter);
+//
+//        model.addAttribute("eventsInPeriod", eventService.findEventInPeriod(startParsedDate, endParsedDate));
+//        return "event/in_period";
+//    }
 
     // 6. Получить перечень концертных мероприятий, проведенных в течение
     //заданного периода времени c указанным организатором.
-    @GetMapping(value = "in-period/by-organizer", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<EventDto>> getEventInPeriodByOrganizer(
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            @RequestParam LocalDate startDate,
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            @RequestParam LocalDate endDate,
-            @RequestParam String organizer) {
-        return ResponseEntity.ok(eventService.findEventInPeriodByOrganizer(startDate, endDate, organizer));
+    @GetMapping(value = "in-period")
+    public String getEventInPeriodByOrganizerForm(Model model, @ModelAttribute("startDate") String startDate,
+                                                  @ModelAttribute("endDate") String endDate) {
+        List<String> allOrganizers = new ArrayList<>(organizerService.list().stream().map(OrganizerDto::getName).toList());
+        allOrganizers.add("all organizers");
+        model.addAttribute("organizersDto", allOrganizers);
+        return "event/in_period";
+    }
+
+    @PostMapping(value = "in-period")
+    public String redirectToEventInPeriodByOrganizer(@ModelAttribute("startDate") String startDate,
+                                                  @ModelAttribute("endDate") String endDate, @RequestParam String organizer) {
+        return "redirect:/event/in-period/show?startDate=" + startDate + "&endDate=" + endDate + "&organizer=" + organizer;
+    }
+
+    @GetMapping(value = "in-period/show")
+    public String getEventInPeriodByOrganizer(Model model, @RequestParam String startDate, @RequestParam String endDate,
+                                  @RequestParam String organizer) {
+        DateTimeFormatter sqlFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        LocalDate startParsedDate = LocalDate.parse(startDate, sqlFormatter);
+        LocalDate endParsedDate = LocalDate.parse(endDate, sqlFormatter);
+
+        List<String> allOrganizers = new ArrayList<>(organizerService.list().stream().map(OrganizerDto::getName).toList());
+        allOrganizers.add("all organizers");
+        model.addAttribute("organizersDto", allOrganizers);
+
+        if (Objects.equals(organizer, "all organizers")) {
+            model.addAttribute("eventsInPeriod", eventService.findEventInPeriod(startParsedDate, endParsedDate));
+        } else {
+            model.addAttribute("eventsInPeriod", eventService.findEventInPeriodByOrganizer(startParsedDate,
+                    endParsedDate, organizer));
+            System.out.println( eventService.findEventInPeriodByOrganizer(startParsedDate,
+                    endParsedDate, organizer).stream().map(EventDto::getName).toList());
+        }
+
+        return "event/in_period";
     }
 
     @PostMapping(value = "by-cultural-building")

@@ -64,7 +64,7 @@ public class ImpresarioController {
     }
 
     @GetMapping("/{id}")
-    public String getArtistById(@PathVariable("id") Long id, Model model) {
+    public String getImpreasarioById(@PathVariable("id") Long id, Model model) {
         try {
             model.addAttribute("impresarioDto", impresarioService.findById(id));
         } catch (ImpresarioNotFoundException ignored) {}
@@ -88,13 +88,16 @@ public class ImpresarioController {
 
     @GetMapping(value = "by-genre")
     public String getImpresariosByGenreForm(Model model) {
-        model.addAttribute("genreDto", genreService.list().stream().map(GenreDto::getName).toList());
-        return "impresario/by_artist";
+        model.addAttribute("genresDto", genreService.list().stream().map(GenreDto::getName).toList());
+        return "impresario/by_genre";
     }
 
     // 9. Получить список импресарио определенного жанра.
     @GetMapping(value = "by-genre/{genre}")
-    public ResponseEntity<List<ImpresarioDetailsDto>> getImpresarioByGenre(@RequestParam String genre) {
-        return ResponseEntity.ok(impresarioService.findImpresarioByGenre(genre));
+    public String getImpresarioByGenre(@PathVariable String genre, Model model) {
+        model.addAttribute("genresDto", genreService.list().stream().map(GenreDto::getName).toList());
+        System.out.println(impresarioService.findImpresarioByGenre(genre).stream().map(ImpresarioDetailsDto::getName));
+        model.addAttribute("impresariosByGenre", impresarioService.findImpresarioByGenre(genre));
+        return "impresario/by_genre";
     }
 }

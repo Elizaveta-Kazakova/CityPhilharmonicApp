@@ -17,7 +17,7 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.artist.Artist;
-import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.cultural_building.CulturalBuilding;
+import ru.nsu.fit.ekazakova.cityPhiharmonic.repository.entity.culturalBuilding.CulturalBuilding;
 
 import java.time.LocalDate;
 import java.util.List;
