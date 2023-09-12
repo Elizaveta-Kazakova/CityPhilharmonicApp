@@ -14,7 +14,10 @@ create function check_event_date() RETURNS trigger AS $$
     end;
 $$ LANGUAGE plpgsql;
 
-create or replace trigger is_such_event_exist
+DROP TRIGGER IF EXISTS is_such_event_exist
+    ON event;
+
+create trigger is_such_event_exist
     before insert on event
     for each row
     execute function check_event_date();
@@ -39,7 +42,10 @@ begin
 end;
 $$ LANGUAGE plpgsql;
 
-create or replace trigger is_event_with_the_same_artists_exist
+DROP TRIGGER IF EXISTS is_event_with_the_same_artists_exist
+    ON event_artist;
+
+create trigger is_event_with_the_same_artists_exist
     before insert on event_artist
     for each row
     execute function check_artist_events();
@@ -63,7 +69,10 @@ create function check_organizer_events() RETURNS trigger AS $$
     end;
 $$ LANGUAGE plpgsql;
 
-create or replace trigger is_organizer_busy
+DROP TRIGGER IF EXISTS is_organizer_busy
+    ON event;
+
+create trigger is_organizer_busy
     before insert on event
     for each row
     execute function check_organizer_events();
@@ -86,7 +95,10 @@ create function check_winner_places() RETURNS trigger AS $$
     end;
 $$ LANGUAGE plpgsql;
 
-create or replace trigger is_place_occupied
+DROP TRIGGER IF EXISTS is_place_occupied
+    ON competition_artist;
+
+create trigger is_place_occupied
     before insert on competition_artist
     for each row
     execute function check_winner_places();
@@ -110,7 +122,10 @@ begin
 end;
 $$ LANGUAGE plpgsql;
 
-create or replace trigger is_competition_from_another_event
+DROP TRIGGER IF EXISTS is_competition_from_another_event
+    ON competition_artist;
+
+create trigger is_competition_from_another_event
     before insert on competition_artist
     for each row
 execute function check_competition_event();
